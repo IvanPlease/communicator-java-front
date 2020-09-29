@@ -1,0 +1,4 @@
+:host([has-label]:not([focused])) [part~="label"]{
+    width: calc(100% - 25px) !important;
+    margin-left: 25px;
+}

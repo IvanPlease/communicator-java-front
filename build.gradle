@@ -1,0 +1,40 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+}
+
+group = 'com'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('vaadinVersion', "14.3.7")
+}
+
+dependencies {
+    implementation 'com.vaadin:vaadin-spring-boot-starter'
+    implementation('com.google.code.gson:gson')
+    implementation("com.google.guava:guava:29.0-jre")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    implementation 'com.google.api-client:google-api-client:1.30.10'
+    implementation 'com.vaadin:vaadin-bom:14.3.7'
+    compileOnly ('org.projectlombok:lombok')
+    annotationProcessor ('org.projectlombok:lombok')
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
