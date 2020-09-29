@@ -9,7 +9,6 @@
 * [Technologies](#technologies)
 * [Setup](#setup)
 * [Features](#features)
-* [Status](#status)
 * [Inspiration](#inspiration)
 * [Contact](#contact)
 
@@ -42,7 +41,7 @@ Create environment variables
 
 ## Features
 List of features ready and TODOs for future development
-* Searching for memebers of communicator
+* Searching for members of communicator
 * Registering using Google account
 * Sending messages between users
 
