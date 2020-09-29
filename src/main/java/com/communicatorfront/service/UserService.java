@@ -17,7 +17,7 @@ import static com.communicatorfront.service.UrlReader.readUrl;
 public class UserService {
     private final LinkedList<User> users = new LinkedList<>();
     private static UserService convService;
-    private static final String hostUrl = "http://localhost:8083/v1/users";
+    private static final String hostUrl = "https://delta-communicator.herokuapp.com/v1/users";
 
     public LinkedList<User> getUsers(String pattern) throws Exception {
         LinkedList<User> users;
