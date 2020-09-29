@@ -7,7 +7,7 @@ import static com.communicatorfront.service.UrlReader.readUrl;
 @Component
 public class MessageService {
 
-    private static final String hostUrl = "https://delta-communicator.herokuapp.com/v1/conv/msg";
+    private static final String hostUrl = "http://localhost:8083/v1/conv/msg";
 
     public void sendMessage(Long userId, Long convId, String message) throws Exception {
         String jsonArray = "{\"author\": {\"id\": "+userId+"}, \"groupMessage\": {\"id\": "+convId+"}, \"content\": \""+message+"\"}";

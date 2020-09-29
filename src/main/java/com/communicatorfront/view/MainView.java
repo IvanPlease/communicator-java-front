@@ -1,6 +1,9 @@
 package com.communicatorfront.view;
 
+import com.communicatorfront.domain.User;
+import com.communicatorfront.domain.UserDataCheck;
 import com.communicatorfront.domain.UserSession;
+import com.communicatorfront.service.NotificationService;
 import com.communicatorfront.service.UserService;
 import com.communicatorfront.view.components.DrawerHandler;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -11,6 +14,7 @@ import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.material.Material;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 
 import javax.annotation.PostConstruct;
 

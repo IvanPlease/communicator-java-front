@@ -13,7 +13,7 @@ import java.util.*;
 @Component
 public class ConvService {
     private final LinkedList<GroupMessage> users;
-    private static final String hostUrl = "https://delta-communicator.herokuapp.com/v1/conv";
+    private static final String hostUrl = "http://localhost:8083/v1/conv";
 
     public ConvService(Long id) throws Exception {
         this.users = getConversations(id);

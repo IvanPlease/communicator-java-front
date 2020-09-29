@@ -16,8 +16,7 @@ import static com.communicatorfront.service.UrlReader.readUrl;
 @Component
 public class UserService {
     private final LinkedList<User> users = new LinkedList<>();
-    private static UserService convService;
-    private static final String hostUrl = "https://delta-communicator.herokuapp.com/v1/users";
+    private static final String hostUrl = "http://localhost:8083/v1/users";
 
     public LinkedList<User> getUsers(String pattern) throws Exception {
         LinkedList<User> users;
@@ -39,11 +38,11 @@ public class UserService {
         return users;
     }
 
-    public void createUser(User user) throws Exception {
+    public User createUser(User user) throws Exception {
         Gson gson = new Gson();
         String jsonArray = gson.toJson(user);
         String json = readUrl(hostUrl, "POST", jsonArray);
-        gson.fromJson(json, User.class);
+        return gson.fromJson(json, User.class);
     }
 
     public User checkForUser(UserDataCheck userDataCheck) throws Exception {

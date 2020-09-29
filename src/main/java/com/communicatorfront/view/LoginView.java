@@ -40,7 +40,7 @@ public class LoginView extends FlexLayout {
             VerticalLayout layout = new VerticalLayout();
             Div div = new Div();
             Span gplusLoginButton = new Span("Login with Google");
-            Image logo = new Image("https://lh3.googleusercontent.com/proxy/4nGl7gcSM4hg3vW0rsgSLDdrmZ8EOud56vM8cprQYxhUrRdV0wMHcCTplaoTgVgOKUjshRtWsxi_XBpqjWGHe8TUdrRMYQpFgZ7E3k7L12WOTYBC3QM", "googleLogo");
+            Image logo = new Image("https://i.imgur.com/Ic7NGVO.png", "googleLogo");
             layout.setAlignSelf(Alignment.CENTER);
             div.addClassNames("ma", "login-button");
             div.add(logo);

@@ -178,6 +178,16 @@ public class DrawerHandler extends AppLayout {
     }
 
     public Component createDrawer() throws Exception {
+        return createPage();
+    }
+
+    public Component createDrawer(Long convId) throws Exception {
+        GroupMessage groupMessage = convService.getConversation(convId);
+        contentHandler.createConversation(groupMessage, currentUser);
+        return createPage();
+    }
+
+    private Component createPage() throws Exception {
         LinkedList<VaadinIcon> optionIcons = new LinkedList<>();
         optionIcons.add(VaadinIcon.USERS);
         optionIcons.add(VaadinIcon.SEARCH_PLUS);
@@ -228,7 +238,6 @@ public class DrawerHandler extends AppLayout {
         verticalLayout.add(optionTabs);
         verticalLayout.add(friendLayout);
         verticalLayout.add(searchLayout);
-
         return verticalLayout;
     }
 }
