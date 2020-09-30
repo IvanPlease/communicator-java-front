@@ -33,8 +33,8 @@ public class ContentHandler {
 
     public void createConversation(GroupMessage groupMessage, User currentUser) throws Exception {
 
-        if(UI.getCurrent().getElement().getChild(0).getChildren().count() > 1){
-            if(UI.getCurrent().getElement().getChild(0).getChild(1).hasAttribute("data-message-box")){
+        if (UI.getCurrent().getElement().getChild(0).getChildren().count() > 1) {
+            if (UI.getCurrent().getElement().getChild(0).getChild(1).hasAttribute("data-message-box")) {
                 UI.getCurrent().getElement().getChild(0).removeChild(1);
             }
         }
@@ -48,9 +48,9 @@ public class ContentHandler {
         Button messageButton = new Button();
         Icon sendIcon = new Icon(VaadinIcon.PAPERPLANE_O);
         ArrayList<String> nameParts = new ArrayList<>();
-        if(groupMessage.getCustomName() == null){
+        if (groupMessage.getCustomName() == null) {
             groupMessage.getUsersInConv().forEach(u -> {
-                if(!u.getId().equals(currentUser.getId())){
+                if (!u.getId().equals(currentUser.getId())) {
                     nameParts.add(u.getFirstname() + " " + u.getLastname());
                 }
             });
@@ -58,7 +58,7 @@ public class ContentHandler {
 
         StringBuilder chatName = new StringBuilder();
 
-        for(String part:nameParts){
+        for (String part : nameParts) {
             chatName.append(part).append(", ");
         }
 
@@ -67,14 +67,14 @@ public class ContentHandler {
 
         messageInput.setPlaceholder("Wiadomosc");
         messageInput.addClassName("inputMessageBox");
-        messageInput.addKeyPressListener(e->{
-            if(e.getKey().matches("Enter")){
+        messageInput.addKeyPressListener(e -> {
+            if (e.getKey().matches("Enter")) {
                 sendMessage(groupMessage, currentUser, messageInput);
             }
         });
 
         messageButton.setIcon(sendIcon);
-        messageButton.addClickListener(e-> sendMessage(groupMessage, currentUser, messageInput));
+        messageButton.addClickListener(e -> sendMessage(groupMessage, currentUser, messageInput));
 
         userName.addClassName("userNameConv");
         userName.setText(chatName.toString());
@@ -87,13 +87,13 @@ public class ContentHandler {
         List<Message> messageList = groupMessage.getMessagesInConv();
         messageList.sort(new CustomComparator());
         Collections.reverse(messageList);
-        for(Message message: messageList){
-            if(!message.isRead() && !message.getAuthor().getId().equals(currentUser.getId())){
+        for (Message message : messageList) {
+            if (!message.isRead() && !message.getAuthor().getId().equals(currentUser.getId())) {
                 msgService.changeMessageStatus(message.getId());
             }
-            if(message.getAuthor().getId().equals(currentUser.getId())){
+            if (message.getAuthor().getId().equals(currentUser.getId())) {
                 convMessageBox.add(createMessageBlop(message, true));
-            }else{
+            } else {
                 convMessageBox.add(createMessageBlop(message, false));
             }
         }
@@ -117,7 +117,7 @@ public class ContentHandler {
 
     private void sendMessage(GroupMessage groupMessage, User currentUser, TextField messageInput) {
         try {
-            if(!messageInput.getValue().equals("")) {
+            if (!messageInput.getValue().equals("")) {
                 msgService.sendMessage(currentUser.getId(), groupMessage.getId(), messageInput.getValue());
                 messageInput.setValue("");
                 createConversation(convService.getConversation(groupMessage.getId()), currentUser);
@@ -128,7 +128,7 @@ public class ContentHandler {
         }
     }
 
-    public VerticalLayout createMessageBlop(Message message, boolean author){
+    public VerticalLayout createMessageBlop(Message message, boolean author) {
         VerticalLayout messageBlop = new VerticalLayout();
         Span content = new Span(message.getContent());
         messageBlop.addClassName("message-blop");

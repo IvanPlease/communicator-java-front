@@ -2,7 +2,10 @@ package com.communicatorfront.view;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -46,7 +49,7 @@ public class LoginView extends FlexLayout {
             div.add(logo);
             div.add(gplusLoginButton);
             layout.add(div);
-            layout.addClickListener(e-> UI.getCurrent().getPage().setLocation(URL));
+            layout.addClickListener(e -> UI.getCurrent().getPage().setLocation(URL));
             add(layout);
         }
 

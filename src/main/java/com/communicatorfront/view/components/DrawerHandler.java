@@ -1,6 +1,9 @@
 package com.communicatorfront.view.components;
 
-import com.communicatorfront.domain.*;
+import com.communicatorfront.domain.GroupMessage;
+import com.communicatorfront.domain.User;
+import com.communicatorfront.domain.UserDataCheck;
+import com.communicatorfront.domain.UserSession;
 import com.communicatorfront.service.ConvService;
 import com.communicatorfront.service.UserService;
 import com.vaadin.flow.component.Component;
@@ -19,7 +22,9 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.TextField;
 import lombok.RequiredArgsConstructor;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
@@ -27,14 +32,14 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class DrawerHandler extends AppLayout {
 
+    private static final String URL = "http://localhost:8085/logout";
     private final ContentHandler contentHandler;
     private final UserService userService;
     private ConvService convService;
     private User currentUser;
-    private static final String URL = "http://localhost:8085/logout";
 
     public void init(UserSession userSession) throws Exception {
-        this.currentUser = userService.checkForUser(new UserDataCheck(userSession.getUser().getFirstname(),userSession.getUser().getLastname(),userSession.getUser().getEmail()));
+        this.currentUser = userService.checkForUser(new UserDataCheck(userSession.getUser().getFirstname(), userSession.getUser().getLastname(), userSession.getUser().getEmail()));
         this.convService = new ConvService(currentUser.getId());
     }
 
@@ -46,7 +51,7 @@ public class DrawerHandler extends AppLayout {
         User user = groupMessage.getUsersInConv().stream().filter(u -> !u.getId().equals(userId)).collect(toList()).get(0);
         int counter = convService.countUnreadMessages(groupMessage.getId(), user.getId());
 
-        if(counter > 0) {
+        if (counter > 0) {
             Span unread = new Span();
             unReadInfo.addClassName("unreadMessages");
             unread.setText(String.valueOf(counter));
@@ -56,7 +61,7 @@ public class DrawerHandler extends AppLayout {
         return getBox(user, friendsBox, unReadInfo, profilePicture, userName);
     }
 
-    public HorizontalLayout createSearchBox(User user){
+    public HorizontalLayout createSearchBox(User user) {
         HorizontalLayout friendsBox = new HorizontalLayout();
         Div unReadInfo = new Div();
         Image profilePicture = new Image();
@@ -83,7 +88,7 @@ public class DrawerHandler extends AppLayout {
         return friendsBox;
     }
 
-    public Tab createFriendBox(User user){
+    public Tab createFriendBox(User user) {
         Tab tab = new Tab();
         tab.add(createSearchBox(user));
         tab.getElement().setAttribute("data-user-id", String.valueOf(user.getId()));
@@ -101,12 +106,12 @@ public class DrawerHandler extends AppLayout {
         LinkedList<GroupMessage> friends = convService.getUsers();
         Tabs tabs = new Tabs(false);
         VerticalLayout friendLayout = new VerticalLayout();
-        for(GroupMessage friend:friends){
+        for (GroupMessage friend : friends) {
             tabs.add(createConvFriendBox(friend, currentUser.getId()));
         }
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
         tabs.setWidthFull();
-        tabs.addSelectedChangeListener(e->{
+        tabs.addSelectedChangeListener(e -> {
             String convId = e.getSelectedTab().getElement().getAttribute("data-conv-id");
             try {
                 e.getSelectedTab().getElement().getChild(0).removeChild(2);
@@ -124,7 +129,7 @@ public class DrawerHandler extends AppLayout {
         return friendLayout;
     }
 
-    public Component searchTabDrawer(){
+    public Component searchTabDrawer() {
         VerticalLayout searchBox = new VerticalLayout();
         TextField textField = new TextField("Wyszkuaj");
         Icon icon = new Icon(VaadinIcon.SEARCH);
@@ -137,12 +142,12 @@ public class DrawerHandler extends AppLayout {
         textField.setClearButtonVisible(true);
         VerticalLayout friend = new VerticalLayout();
         Tabs tabs = new Tabs(false);
-        textField.addValueChangeListener(e->{
+        textField.addValueChangeListener(e -> {
             tabs.removeAll();
             try {
                 LinkedList<User> users = userService.getUsers(e.getValue());
-                for(User result:users){
-                    if(!result.getId().equals(currentUser.getId())){
+                for (User result : users) {
+                    if (!result.getId().equals(currentUser.getId())) {
                         tabs.add(createFriendBox(result));
                     }
                 }
@@ -152,7 +157,7 @@ public class DrawerHandler extends AppLayout {
         });
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
         tabs.setWidthFull();
-        tabs.addSelectedChangeListener(e->{
+        tabs.addSelectedChangeListener(e -> {
             try {
                 GroupMessage createdConv = convService.createConversation(currentUser.getId(), Long.parseLong(e.getSelectedTab().getElement().getAttribute("data-user-id")));
                 GroupMessage newConv = convService.getConversation(createdConv.getId());
@@ -181,12 +186,6 @@ public class DrawerHandler extends AppLayout {
         return createPage();
     }
 
-    public Component createDrawer(Long convId) throws Exception {
-        GroupMessage groupMessage = convService.getConversation(convId);
-        contentHandler.createConversation(groupMessage, currentUser);
-        return createPage();
-    }
-
     private Component createPage() throws Exception {
         LinkedList<VaadinIcon> optionIcons = new LinkedList<>();
         optionIcons.add(VaadinIcon.USERS);
@@ -206,12 +205,12 @@ public class DrawerHandler extends AppLayout {
 
         Tabs optionTabs = new Tabs();
         searchLayout = (VerticalLayout) searchTabDrawer();
-        for(VaadinIcon icon:optionIcons){
+        for (VaadinIcon icon : optionIcons) {
             Tab inTab = new Tab(new Icon(icon));
             inTab.addClassName("mw-50p");
-            if(icon == VaadinIcon.USERS){
+            if (icon == VaadinIcon.USERS) {
                 tabsToPages.put(inTab, friendLayout);
-            }else if(icon == VaadinIcon.SEARCH_PLUS){
+            } else if (icon == VaadinIcon.SEARCH_PLUS) {
                 tabsToPages.put(inTab, searchLayout);
             }
             optionTabs.add(inTab);
@@ -220,9 +219,9 @@ public class DrawerHandler extends AppLayout {
         optionTabs.setWidthFull();
         optionTabs.setFlexGrowForEnclosedTabs(1);
         optionTabs.addSelectedChangeListener(e -> {
-            if(e.getSelectedTab().getElement().getChild(0).getAttribute("icon").equals("vaadin:sign-out")){
+            if (e.getSelectedTab().getElement().getChild(0).getAttribute("icon").equals("vaadin:sign-out")) {
                 UI.getCurrent().getPage().setLocation(URL);
-            }else{
+            } else {
                 tabsToPages.values().forEach(p -> p.setVisible(false));
                 tabsToPages.get(optionTabs.getSelectedTab()).setVisible(true);
                 try {

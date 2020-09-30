@@ -20,8 +20,4 @@ public class UserSession {
                 .build();
     }
 
-    public boolean isLoggedIn() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null;
-    }
 }

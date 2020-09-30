@@ -15,8 +15,8 @@ import static com.communicatorfront.service.UrlReader.readUrl;
 @Getter
 @Component
 public class UserService {
-    private final LinkedList<User> users = new LinkedList<>();
     private static final String hostUrl = "http://localhost:8083/v1/users";
+    private final LinkedList<User> users = new LinkedList<>();
 
     public LinkedList<User> getUsers(String pattern) throws Exception {
         LinkedList<User> users;
@@ -24,11 +24,11 @@ public class UserService {
         Pattern userPatternOne = Pattern.compile("^\\b[a-zA-Z]+\\b\\s\\b[a-zA-Z]+\\b$");
         Pattern userPatternTwo = Pattern.compile("\\b[a-zA-Z]+\\b$");
         long searchType = 3L;
-        if(mailPattern.matcher(pattern).matches()){
+        if (mailPattern.matcher(pattern).matches()) {
             searchType = 2L;
-        }else if(userPatternOne.matcher(pattern).matches()){
+        } else if (userPatternOne.matcher(pattern).matches()) {
             searchType = 1L;
-        }else if(userPatternTwo.matcher(pattern).matches()){
+        } else if (userPatternTwo.matcher(pattern).matches()) {
             searchType = 0L;
         }
         String url = hostUrl + "/pattern" + "?searchType=" + searchType + "&searchValue=" + pattern;
@@ -38,16 +38,16 @@ public class UserService {
         return users;
     }
 
-    public User createUser(User user) throws Exception {
+    public void createUser(User user) throws Exception {
         Gson gson = new Gson();
         String jsonArray = gson.toJson(user);
         String json = readUrl(hostUrl, "POST", jsonArray);
-        return gson.fromJson(json, User.class);
+        gson.fromJson(json, User.class);
     }
 
     public User checkForUser(UserDataCheck userDataCheck) throws Exception {
         Gson gson = new Gson();
-        String json = readUrl(hostUrl + "/googleauth?firstname="+userDataCheck.getFirstname()+"&lastname="+userDataCheck.getLastname()+"&email="+userDataCheck.getEmail(), "GET", "");
+        String json = readUrl(hostUrl + "/googleauth?firstname=" + userDataCheck.getFirstname() + "&lastname=" + userDataCheck.getLastname() + "&email=" + userDataCheck.getEmail(), "GET", "");
         return gson.fromJson(json, User.class);
     }
 

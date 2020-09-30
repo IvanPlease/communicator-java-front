@@ -9,5 +9,6 @@ import java.util.Comparator;
 public class CustomComparator implements Comparator<Message> {
     @Override
     public int compare(Message o1, Message o2) {
-        return o1.getId().compareTo(o2.getId()); }
+        return o1.getId().compareTo(o2.getId());
+    }
 }

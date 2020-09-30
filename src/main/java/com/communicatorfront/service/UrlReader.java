@@ -19,11 +19,11 @@ public class UrlReader {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod(method);
-            conn.setRequestProperty( "Content-type", "application/json");
-            conn.setRequestProperty( "Accept", "*/*" );
+            conn.setRequestProperty("Content-type", "application/json");
+            conn.setRequestProperty("Accept", "*/*");
             conn.setDoInput(true);
             conn.setDoOutput(true);
-            if(!json.equals("")){
+            if (!json.equals("")) {
                 OutputStream os = conn.getOutputStream();
                 os.write(json.getBytes(StandardCharsets.UTF_8));
                 os.close();

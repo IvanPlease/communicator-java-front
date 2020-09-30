@@ -6,20 +6,23 @@ import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import static com.communicatorfront.service.UrlReader.readUrl;
-import java.util.*;
 
 @Getter
 @Component
 public class ConvService {
-    private final LinkedList<GroupMessage> users;
     private static final String hostUrl = "http://localhost:8083/v1/conv";
+    private final LinkedList<GroupMessage> users;
 
     public ConvService(Long id) throws Exception {
         this.users = getConversations(id);
     }
 
-    public ConvService(){
+    public ConvService() {
         this.users = new LinkedList<>();
     }
 
@@ -28,7 +31,8 @@ public class ConvService {
         String url = hostUrl + "/user/" + id;
         String json = readUrl(url, "GET", "");
         Gson gson = new Gson();
-        List<Long> convsId = gson.fromJson(json, new TypeToken<ArrayList<Long>>(){}.getType());
+        List<Long> convsId = gson.fromJson(json, new TypeToken<ArrayList<Long>>() {
+        }.getType());
         convsId.forEach(c -> {
             try {
                 users.add(getConversation(c));
@@ -39,7 +43,7 @@ public class ConvService {
         return users;
     }
 
-    public int countUnreadMessages(Long convId, Long userId) throws Exception{
+    public int countUnreadMessages(Long convId, Long userId) throws Exception {
         String url = hostUrl + "/" + convId + "/unread/" + userId;
         return Integer.parseInt(readUrl(url, "GET", ""));
     }
